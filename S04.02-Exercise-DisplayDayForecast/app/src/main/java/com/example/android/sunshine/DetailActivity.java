@@ -19,7 +19,7 @@ public class DetailActivity extends AppCompatActivity {
 
         // TODO (2) Display the weather forecast that was passed from MainActivity
         mWeatherDisplay = (TextView) findViewById(R.id.tv_display_weather);
-        
+
         Intent intent_that_started_this_Activity = getIntent();
 
         if (intent_that_started_this_Activity != null) {

@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -215,14 +216,53 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_refresh) {
-            mForecastAdapter.setWeatherData(null);
-            loadWeatherData();
-            return true;
+//        if (id == R.id.action_refresh) {
+//            mForecastAdapter.setWeatherData(null);
+//            loadWeatherData();
+//            return true;
+//        }
+
+        switch (id) {
+
+            case R.id.action_refresh:
+                mForecastAdapter.setWeatherData(null);
+                loadWeatherData();
+                return true;
+
+            // XTODO (2) Launch the map when the map menu item is clicked
+            case R.id.action_map:
+                showOnMap();
+                return true;
         }
-
-        // TODO (2) Launch the map when the map menu item is clicked
-
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * This method will fire off an implicit Intent to view a location on a map.
+     *
+     * When constructing implicit Intents, you can use either the setData method or specify the
+     * URI as the second parameter of the Intent's constructor,
+     * as I do in {@link #openWebPage(String)}
+     *
+     * @param geoLocation The Uri representing the location that will be opened in the map
+     */
+    private void showOnMap() {
+
+        String addressString = "1600 Ampitheatre Parkway, CA";
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
+        /*
+         * Again, we create an Intent with the action, ACTION_VIEW because we want to VIEW the
+         * contents of this Uri.
+         */
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        /*
+         * Using setData to set the Uri of this Intent has the exact same affect as passing it in
+         * the Intent's constructor. This is simply an alternate way of doing this.
+         */
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
